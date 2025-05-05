@@ -38,6 +38,7 @@ func (g *gitHubPr) GetPRFiles(prURL string) ([]string, error) {
 
 	var files []struct {
 		Filename string `json:"filename"`
+		Status   string `json:"status"`
 	}
 	if err := json.NewDecoder(resp.Body).Decode(&files); err != nil {
 		return nil, err
@@ -45,6 +46,10 @@ func (g *gitHubPr) GetPRFiles(prURL string) ([]string, error) {
 
 	var fileNames []string
 	for _, f := range files {
+		if f.Status == "removed" {
+			continue // skip deleted files
+		}
+
 		fileNames = append(fileNames, f.Filename)
 	}
 	return fileNames, nil

@@ -123,7 +123,9 @@ func commentOnPRIfNecessary(filePath string, comment, diffContent string, lineMa
 			if remap {
 				mappedLineNr, err = diffmapper.GetClosestPrOffset(mappedLineNr)
 				if err != nil {
-					return err
+					// skip for now
+					continue
+					// return err
 				}
 			}
 

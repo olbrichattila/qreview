@@ -76,7 +76,9 @@ func (g *github) Comment(prURL, filePath string, comment string, lineNumber int)
 		return nil
 	}
 
-	return fmt.Errorf("failed to post comment. Status: %s: File: %s\n", resp.Status, filePath)
+	// Skip error not to break PR
+	fmt.Printf("failed to post comment. Status: %s: File: %s\n", resp.Status, filePath)
+	return nil
 }
 
 // getPRHeadSHA fetches the head commit SHA of a GitHub PR
