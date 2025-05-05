@@ -96,8 +96,9 @@ func commentOnPRIfNecessary(filePath string, comment, diffContent string, lineMa
 		cmdinterpreter.HasFlag(cmdinterpreter.FlagComment) &&
 		prCommenterCache != nil {
 		remap := false
+		var diffMap diffmapper.ChangedLines
 		if diffContent != "" {
-			diffmapper.GetMap(diffContent)
+			diffMap = diffmapper.GetMap(diffContent)
 			remap = true
 		}
 		prURL, err := cmdinterpreter.Flag(cmdinterpreter.FlagGithubPR)
@@ -107,8 +108,14 @@ func commentOnPRIfNecessary(filePath string, comment, diffContent string, lineMa
 
 		parsedReview := reviewparser.Parse(comment)
 
-		fmt.Printf("Commenting on PR File: %s, line 0\n", filePath)
-		err = prCommenterCache.Comment(prURL, filePath, parsedReview.Summary, 1)
+		defaultLine := 1
+		// This might rather be an error?
+		if diffMap != nil {
+			defaultLine = diffMap[0].LineNum
+		}
+
+		fmt.Printf("Commenting on PR File: %s, line %d\n", filePath, defaultLine)
+		err = prCommenterCache.Comment(prURL, filePath, parsedReview.Summary, defaultLine)
 		if err != nil {
 			return err
 		}

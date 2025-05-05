@@ -28,6 +28,7 @@ func GetMap(diff string) ChangedLines {
 		line := scanner.Text()
 
 		if strings.HasPrefix(line, "@@") {
+			fmt.Println("hunk", line)
 			hunkStarted = true
 			// Parse hunk header: @@ -a,b +c,d @@
 			parts := strings.Split(line, " ")
