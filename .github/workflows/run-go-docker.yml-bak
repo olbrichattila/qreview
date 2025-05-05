@@ -1,0 +1,16 @@
+name: Run Go Docker Image on PR
+
+on:
+  pull_request:
+    types: [opened]
+
+jobs:
+  run-go-image:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Pull Docker image from Docker Hub
+        run: docker pull yourusername/my-go-app:latest
+
+      - name: Run the Docker container
+        run: docker run --rm yourusername/my-go-app:latest
