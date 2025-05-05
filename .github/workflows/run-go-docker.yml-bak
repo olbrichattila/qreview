@@ -13,4 +13,4 @@ jobs:
         run: docker pull yourusername/my-go-app:latest
 
       - name: Run the Docker container
-        run: docker run --rm yourusername/my-go-app:latest
+        run: docker run --rm  -e PR_URL=${{ github.event.pull_request.html_url }} yourusername/my-go-app:latest
