@@ -100,3 +100,18 @@ Tips:
 - Build reusable prompts with different retrieverKind values (e.g., file, diff)
 - Since Q requires interactive login, local reviews are ideal — but the architecture supports extending it with Bedrock or Ollama for CI/CD compatibility
 
+## Development Experience and Challenges
+What started as a quick automation experiment quickly evolved into a much larger and more powerful tool as new ideas emerged during development — especially around making the system modular, with support for multiple and extendable reporters (e.g., HTML, Markdown, PR comments).
+
+### Key Challenges:
+- **Aligning Reviews to the Correct Lines in GitHub PRs**
+One of the most complex problems was ensuring that AI-generated comments could be accurately mapped to the correct lines in a Pull Request. Since the AI (Amazon Q or others) may tokenize input, omit blank lines, or slightly reformat code internally, it often drifted from the original structure.
+To solve this, I preprocess the full source file (removing blank lines) before feeding it into the model, then carefully map the cleaned lines back to their positions in the raw file. This also includes parsing and respecting the Git diff hunk headers `@@ -a,b +c,d @@` to ensure the review appears exactly where intended in the PR.
+
+- **Handling Incomplete Context in Diffs:**
+Reviewing just the diff often lacked enough context, leading to poor or irrelevant suggestions. I had to design a hybrid approach that uses both the full source file (for context-aware reviews) and the diff (for accurate line mapping and change detection).
+
+- **Unexpected but Welcome Feedback — From Itself:**
+Once the system was functional, I turned it loose on its own source code. The result? A cascade of inline suggestions and improvement ideas — effectively reviewing and improving itself. This was a rewarding moment that reinforced the value and practical utility of the tool
+
+What began as a utility has grown into a versatile, self-improving, and extensible code review companion.
