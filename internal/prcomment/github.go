@@ -39,6 +39,10 @@ func (g *github) Comment(prURL, filePath string, comment string, lineNumber int)
 
 	url := fmt.Sprintf("https://api.github.com/repos/%s/%s/pulls/%d/comments", owner, repo, prNumber)
 
+	if lineNumber == 0 {
+		lineNumber = 1
+	}
+
 	body := map[string]interface{}{
 		"body":      comment,
 		"commit_id": commitSHA,
