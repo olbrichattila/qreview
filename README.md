@@ -90,6 +90,9 @@ Create a dedicated documentation viewer site with search and filtering by file, 
 - **Better GitHub Integration:**
 Support for more GitHub workflows (e.g., triggered on push or comment), better diff visualization, and inline responses to review comments.
 
+- **Slack or Other Chat Notifications for Reviews:**
+Add integration with Slack (or similar chat platforms) to send real-time notifications when a new review is completed. This could include summaries, critical suggestions, and direct links to full reports or PR comments — helping teams stay informed and act faster.
+
 
 - **Domain-Aware, Agentic AI Reviews:**
 Extend the reviewer with agentic AI capabilities using Retrieval-Augmented Generation (RAG), where reviews can be enhanced by specific domain knowledge or internal documentation. This would allow the tool to not only identify code issues, but also evaluate business logic, validate domain-specific rules, and flag inconsistencies based on proprietary requirements or best practices.
