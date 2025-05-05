@@ -2,6 +2,8 @@
 package review
 
 import (
+	"fmt"
+
 	cmdinterpreter "github.com/olbrichattila/qreview/internal/cmd-interpreter"
 	"github.com/olbrichattila/qreview/internal/diffmapper"
 	"github.com/olbrichattila/qreview/internal/env"
@@ -12,8 +14,14 @@ import (
 )
 
 const (
-	PromptReview         = "Review this code for bugs, performance, security issues, and suggest improvements. Use the following format for your comments: Line: <line number>: <review>\n\n"
-	PromptReviewChanges  = "Review this git diff, do not compare changes, only review new lines. Use the following format for your comments: Line: <line number>: <review>\n\n"
+	PromptReview = `Review this code for bugs, performance, security issues, and suggest improvements.
+	The code is provided with line numbers in the format "LINE_NUMBER: code".
+	When referring to lines in your review, use the exact line number shown at the beginning of each line.
+	Use the following format for your comments: Line: <line number>: <review>
+	
+	Code:
+	`
+
 	PromptExplainChanges = "Explain changes of the following diff:\n\n"
 	PromptExplainCode    = "Explain what this code do:\n\n"
 
@@ -83,8 +91,7 @@ func summary(reporters []report.Reporter) error {
 	return nil
 }
 
-func commentOnPRIfNecessary(filePath string, comment, diffContent string) error {
-
+func commentOnPRIfNecessary(filePath string, comment, diffContent string, lineMap map[int]int) error {
 	if cmdinterpreter.HasFlag(cmdinterpreter.FlagGithubPR) &&
 		cmdinterpreter.HasFlag(cmdinterpreter.FlagComment) &&
 		prCommenterCache != nil {
@@ -100,19 +107,21 @@ func commentOnPRIfNecessary(filePath string, comment, diffContent string) error 
 
 		parsedReview := reviewparser.Parse(comment)
 
+		fmt.Printf("Commenting on PR File: %s, line 0\n", filePath)
 		err = prCommenterCache.Comment(prURL, filePath, parsedReview.Summary, 1)
 		if err != nil {
 			return err
 		}
 		for lineNr, lineComment := range parsedReview.Lines {
-			mappedLineNr := lineNr
+			mappedLineNr := lineMap[lineNr]
 			if remap {
-				mappedLineNr, err = diffmapper.GetClosestPrOffset(lineNr)
+				mappedLineNr, err = diffmapper.GetClosestPrOffset(mappedLineNr)
 				if err != nil {
 					return err
 				}
 			}
 
+			fmt.Printf("Commenting on PR File: %s, line %d\n", filePath, mappedLineNr)
 			err = prCommenterCache.Comment(prURL, filePath, lineComment, mappedLineNr)
 			if err != nil {
 				return err

@@ -2,6 +2,7 @@ package source
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/olbrichattila/qreview/internal/env"
 	"github.com/olbrichattila/qreview/internal/git"
@@ -44,7 +45,8 @@ func (g *github) GetDiff(fileName string) (string, error) {
 
 	for _, f := range cachedDiffFiles {
 		if f.Filename == fileName {
-			return f.Patch, nil
+			normalizedCode := strings.ReplaceAll(f.Patch, "\r\n", "\n")
+			return normalizedCode, nil
 		}
 	}
 
@@ -53,7 +55,12 @@ func (g *github) GetDiff(fileName string) (string, error) {
 
 // GetFile implements Source.
 func (g *github) GetFile(fileName string) (string, error) {
-	return g.pr.GetPRFileContent(g.prURL, fileName)
+	result, err := g.pr.GetPRFileContent(g.prURL, fileName)
+	if err != nil {
+		return "", err
+	}
+
+	return strings.ReplaceAll(result, "\r\n", "\n"), nil
 }
 
 // GetFiles implements Source.

@@ -10,6 +10,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/service/bedrockruntime"
+	"github.com/olbrichattila/qreview/internal/helpers"
 	"github.com/olbrichattila/qreview/internal/report"
 	"github.com/olbrichattila/qreview/internal/retriever"
 )
@@ -64,6 +65,8 @@ func (a *bedrock) AnalyzeCode(fileName string) error {
 		return fmt.Errorf("Analyze code %w", err)
 	}
 
+	remappedContent, lineMap := helpers.SourceCodeLineRemap(content.FileContent)
+
 	// Load AWS configuration from environment variables or shared credentials file
 	cfg, err := config.LoadDefaultConfig(context.TODO())
 	if err != nil {
@@ -74,7 +77,7 @@ func (a *bedrock) AnalyzeCode(fileName string) error {
 	bedrockClient := bedrockruntime.NewFromConfig(cfg)
 
 	// Prepare the message with the prompt and file content
-	message := a.prompt + content.FileContent
+	message := a.prompt + remappedContent
 
 	// Create the Claude request (Amazon Q uses Claude under the hood)
 	claudeReq := claudeRequest{
@@ -130,7 +133,7 @@ func (a *bedrock) AnalyzeCode(fileName string) error {
 
 	// Handle PR comments if needed
 	if a.commentOnPR {
-		err = commentOnPRIfNecessary(fileName, aiResponse, content.DiffContent)
+		err = commentOnPRIfNecessary(fileName, aiResponse, content.DiffContent, lineMap)
 		if err != nil {
 			return err
 		}

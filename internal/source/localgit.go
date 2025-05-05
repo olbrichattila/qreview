@@ -3,6 +3,7 @@ package source
 import (
 	"fmt"
 	"os"
+	"strings"
 
 	"github.com/olbrichattila/qreview/internal/git"
 )
@@ -16,8 +17,12 @@ type localGit struct {
 
 // GetDiff implements Source.
 func (g *localGit) GetDiff(fileName string) (string, error) {
-	fmt.Println("Git diff called")
-	return git.GetDiff(fileName)
+	result, err := git.GetDiff(fileName)
+	if err != nil {
+		return "", err
+	}
+
+	return strings.ReplaceAll(result, "\r\n", "\n"), nil
 }
 
 // GetFile implements Source.
@@ -27,7 +32,7 @@ func (g *localGit) GetFile(fileName string) (string, error) {
 		return "", fmt.Errorf("could not read file: %w", err)
 	}
 
-	return string(content), nil
+	return strings.ReplaceAll(string(content), "\r\n", "\n"), nil
 }
 
 // GetFiles implements Source.

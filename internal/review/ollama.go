@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os/exec"
 
+	"github.com/olbrichattila/qreview/internal/helpers"
 	"github.com/olbrichattila/qreview/internal/report"
 	"github.com/olbrichattila/qreview/internal/retriever"
 )
@@ -49,18 +50,9 @@ func (a *ollama) AnalyzeCode(fileName string) error {
 		return fmt.Errorf("Analyze code %w", err)
 	}
 
-	fmt.Println("----kind-----", content.Kind)
-	fmt.Println("----file-----")
-	fmt.Println(content.FileContent)
-	fmt.Println("----diff-----")
-	fmt.Println(content.DiffContent)
+	remappedContent, lineMap := helpers.SourceCodeLineRemap(content.FileContent)
 
-	// mapped := diffmapper.GetMap(content.DiffContent)
-	// for _, mp := range mapped {
-	// 	fmt.Println(mp.LineNum, "--", mp.Content)
-	// }
-
-	cmd := exec.Command("ollama", "run", "llama3", a.prompt+"\n"+content.FileContent)
+	cmd := exec.Command("ollama", "run", "llama3", a.prompt+remappedContent)
 
 	var out bytes.Buffer
 	cmd.Stdout = &out
@@ -83,7 +75,7 @@ func (a *ollama) AnalyzeCode(fileName string) error {
 
 	// TODO mapper
 	if a.commentOnPR {
-		err = commentOnPRIfNecessary(fileName, aiResponse, content.DiffContent)
+		err = commentOnPRIfNecessary(fileName, aiResponse, content.DiffContent, lineMap)
 		if err != nil {
 			return err
 		}

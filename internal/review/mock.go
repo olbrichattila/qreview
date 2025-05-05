@@ -33,8 +33,9 @@ func (a *mock) AnalyzeCode(fileName string) error {
 	}
 
 	fakeContent := fmt.Sprintf("-- MOCK result --\n Content:\n%s\n\nPrompt: %s", content.FileContent, a.prompt)
+	fakeLineMap := make(map[int]int)
 	if a.commentOnPR {
-		err = commentOnPRIfNecessary(fileName, "this is an automated test comment", "")
+		err = commentOnPRIfNecessary(fileName, "this is an automated test comment", "", fakeLineMap)
 		if err != nil {
 			return err
 		}
