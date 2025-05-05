@@ -69,6 +69,7 @@ jobs:
 ```
 > Note: Amazon Q Developer CLI currently requires interactive login, so GitHub Action support is limited to Bedrock or other backends unless expanded.
 
+---
 
 ### Possible Future Improvements
 This project is already quite powerful, but there are several areas I plan to enhance further:
