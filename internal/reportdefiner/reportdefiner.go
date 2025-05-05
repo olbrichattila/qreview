@@ -93,7 +93,7 @@ func GetDefaultReviewers(envManager env.EnvironmentManager, reportFolder string)
 		},
 		{
 			Prompt:        review.PromptExplainChanges,
-			RetrieverKind: retriever.KindFile,
+			RetrieverKind: retriever.KindDiff,
 			CommentOnPr:   false,
 			Reporters: []ReporterDefinition{
 				{Kind: report.KindHTML, Folder: reportFolder, Name: typeUpdateDocumentations},
