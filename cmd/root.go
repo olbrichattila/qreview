@@ -2,57 +2,93 @@ package cmd
 
 import (
 	"fmt"
-	"os"
 
-	"github.com/olbrichattila/qreview/internal/format"
-	"github.com/olbrichattila/qreview/internal/git"
+	"github.com/olbrichattila/qreview/internal/env"
 	"github.com/olbrichattila/qreview/internal/review"
-	"github.com/spf13/cobra"
+	"github.com/olbrichattila/qreview/internal/source"
 )
 
-var rootCmd = &cobra.Command{
-	Use:   "qreview-go",
-	Short: "AI-powered code review CLI using Amazon Q",
-	Long: `qreview-go is a CLI tool that integrates with Amazon Q Developer CLI
-to review your staged code changes for quality, security, and performance.`,
-	Run: func(cmd *cobra.Command, args []string) {
-		files, err := git.GetStagedFiles()
-		if err != nil {
-			fmt.Println("❌ Failed to get Git diff:", err)
-			os.Exit(1)
+// New creates a new command line interpreter
+func New(env env.EnvironmentManager, reviewers []review.Reviewer) (CommandInterpreter, error) {
+	// validation
+
+	if env == nil {
+		return nil, fmt.Errorf("environment manager should not be nil")
+	}
+
+	for _, reviewer := range reviewers {
+		if reviewer == nil {
+			return nil, fmt.Errorf("reviewer list contains a nil value")
 		}
+	}
 
-		if len(files) == 0 {
-			fmt.Println("✅ No staged files to review.")
-			return
-		}
+	newSource, err := source.New(env)
+	if err != nil {
+		return nil, err
+	}
 
-		hadIssues := false
-
-		for _, file := range files {
-			content, err := os.ReadFile(file)
-			if err != nil {
-				fmt.Printf("⚠️ Could not read %s: %v\n", file, err)
-				continue
-			}
-
-			fmt.Printf("🔍 Reviewing %s...\n", file)
-			result := review.AnalyzeCode(string(content), file)
-			format.PrintToTerminal(file, result)
-
-			// crude check to see if we should fail for Git hook
-			if review.ContainsCritical(result) {
-				hadIssues = true
-			}
-		}
-
-		if hadIssues {
-			fmt.Println("❌ Critical issues found. Commit aborted.")
-			os.Exit(1)
-		}
-	},
+	return &comm{
+		env:       env,
+		reviewers: reviewers,
+		source:    newSource,
+	}, nil
 }
 
-func Execute() {
-	cobra.CheckErr(rootCmd.Execute())
+type CommandInterpreter interface {
+	Execute() error
+}
+
+type comm struct {
+	env       env.EnvironmentManager
+	reviewers []review.Reviewer
+	source    source.Source
+}
+
+func (c *comm) Execute() error {
+	files, err := c.source.GetFiles()
+	if err != nil {
+		return fmt.Errorf("failed to get files form git: %w", err)
+	}
+
+	if len(files) == 0 {
+		return nil
+	}
+
+	for _, file := range files {
+		if !c.hasExt(file) {
+			continue
+		}
+
+		err := c.executeReview(file)
+		if err != nil {
+			return fmt.Errorf("execute, could not read file: %w", err)
+		}
+	}
+
+	return c.generateReportSummary()
+}
+
+func (c *comm) hasExt(fileName string) bool {
+	return c.env.ShouldProcessFile(fileName)
+}
+
+func (c *comm) executeReview(fileName string) error {
+	for _, reviewer := range c.reviewers {
+		fmt.Printf("Reviewing %s...\n", fileName)
+		if err := reviewer.AnalyzeCode(fileName); err != nil {
+			return fmt.Errorf("failed to analyze file: %w", err)
+		}
+	}
+
+	return nil
+}
+
+func (c *comm) generateReportSummary() error {
+	for _, reviewer := range c.reviewers {
+		if err := reviewer.Summary(); err != nil {
+			return err
+		}
+	}
+
+	return nil
 }
