@@ -94,6 +94,7 @@ Support for more GitHub workflows (e.g., triggered on push or comment), better d
 Extend the reviewer with agentic AI capabilities using Retrieval-Augmented Generation (RAG), where reviews can be enhanced by specific domain knowledge or internal documentation. This would allow the tool to not only identify code issues, but also evaluate business logic, validate domain-specific rules, and flag inconsistencies based on proprietary requirements or best practices.
 
 These improvements aim to make the tool even more developer-friendly, team-scalable, and capable of reasoning beyond the code itself.
+
 ---
 
 ## Demo
