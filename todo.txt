@@ -1,2 +1,9 @@
 github auto review
 next to code review add possibility to document code changes for each PR
+
+example pr: https://github.com/olbrichattila/godbmigrator/pull/7
+
+add possibility to skip test 
+
+go run . -githubPr=https://github.com/olbrichattila/godbmigrator/pull/7
+

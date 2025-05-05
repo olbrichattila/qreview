@@ -1,0 +1,24 @@
+- prompt: "Please review the following code file."
+  retrieverKind: file
+  reporters:
+    - kind: html
+      name: file-review
+    - kind: markdown
+      name: file-review
+
+- prompt: "Summarize the differences."
+  retrieverKind: diff
+  commentOnPr: true
+  reporters:
+    - kind: html
+      name: file-review
+    - kind: markdown
+      name: diff-summary
+
+- prompt: "Please create documentation of the file."
+  retrieverKind: file
+  reporters:
+    - kind: html
+      name: file-review
+    - kind: markdown
+      name: diff-summary
