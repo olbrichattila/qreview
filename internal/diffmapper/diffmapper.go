@@ -70,14 +70,8 @@ func GetClosestPrOffset(prLineNr int) (int, error) {
 		return 0, fmt.Errorf("you must run GetMap before getting the closest pr offset")
 	}
 
-	// for i := len(latestChanges) - 1; i >= 0; i-- {
-	// 	if latestChanges[i].LineNum <= prLineNr {
-	// 		return latestChanges[i].LineNum, nil
-	// 	}
-	// }
-
-	for i := 0; i < len(latestChanges); i++ {
-		if latestChanges[i].LineNum >= prLineNr {
+	for i := len(latestChanges) - 1; i >= 0; i-- {
+		if latestChanges[i].LineNum <= prLineNr {
 			return latestChanges[i].LineNum, nil
 		}
 	}
