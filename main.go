@@ -3,14 +3,12 @@ package main
 import (
 	"errors"
 	"fmt"
-	"os"
 	"time"
 
 	"github.com/olbrichattila/qreview/cmd"
 	"github.com/olbrichattila/qreview/internal/env"
 	"github.com/olbrichattila/qreview/internal/parentsummary"
 	"github.com/olbrichattila/qreview/internal/reportdefiner"
-	"github.com/olbrichattila/qreview/internal/reviewparser"
 )
 
 const (
@@ -18,21 +16,6 @@ const (
 	reportTypeDiff   = "difference"
 	reportTypeDoc    = "documentation"
 )
-
-func main2() {
-	data, err := os.ReadFile("report/2025/05/05/10_09/changes/test.php.md")
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
-
-	parsed := reviewparser.Parse(string(data))
-
-	fmt.Println(parsed.Summary)
-	for key, value := range parsed.Lines {
-		fmt.Println(key, " --- ", value)
-	}
-}
 
 func main() {
 	envManager, err := env.NewDotEnv()
