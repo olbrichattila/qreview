@@ -63,7 +63,6 @@ func main() {
 		printErrors(err)
 		return
 	}
-
 }
 
 func printErrors(err error) {

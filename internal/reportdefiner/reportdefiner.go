@@ -64,43 +64,37 @@ func Load(envManager env.EnvironmentManager, yamlFileName, reportFolder string) 
 }
 
 func GetDefaultReviewers(envManager env.EnvironmentManager, reportFolder string) ([]review.Reviewer, error) {
-	/*
-		typeReview               = "review"
-		typeDocumentation        = "documentation"
-		typeUpdateDocumentations = "update-documentation"
-	*/
-
 	def := ReviewerDefinitions{
 		{
 			Prompt:        review.PromptReview,
 			RetrieverKind: retriever.KindMixed,
 			CommentOnPr:   true,
-			Reporters: []ReporterDefinition{
-				{Kind: report.KindHTML, Folder: reportFolder, Name: typeReview},
-				//{Kind: report.KindMarkdown, Folder: reportFolder, Name: typeReview},
-				{Kind: report.KindSave, Folder: reportFolder, Name: typeReview},
+			Reporters:     []ReporterDefinition{
+				// {Kind: report.KindHTML, Folder: reportFolder, Name: typeReview},
+				// //{Kind: report.KindMarkdown, Folder: reportFolder, Name: typeReview},
+				// {Kind: report.KindSave, Folder: reportFolder, Name: typeReview},
 			},
 		},
-		{
-			Prompt:        review.PromptExplainCode,
-			RetrieverKind: retriever.KindFile,
-			CommentOnPr:   false,
-			Reporters: []ReporterDefinition{
-				{Kind: report.KindHTML, Folder: reportFolder, Name: typeDocumentation},
-				// {Kind: report.KindMarkdown, Folder: reportFolder, Name: typeDocumentation},
-				{Kind: report.KindSave, Folder: reportFolder, Name: typeDocumentation},
-			},
-		},
-		{
-			Prompt:        review.PromptExplainChanges,
-			RetrieverKind: retriever.KindDiff,
-			CommentOnPr:   false,
-			Reporters: []ReporterDefinition{
-				{Kind: report.KindHTML, Folder: reportFolder, Name: typeUpdateDocumentations},
-				// {Kind: report.KindMarkdown, Folder: reportFolder, Name: typeUpdateDocumentations},
-				{Kind: report.KindSave, Folder: reportFolder, Name: typeUpdateDocumentations},
-			},
-		},
+		// {
+		// 	Prompt:        review.PromptExplainCode,
+		// 	RetrieverKind: retriever.KindFile,
+		// 	CommentOnPr:   false,
+		// 	Reporters: []ReporterDefinition{
+		// 		{Kind: report.KindHTML, Folder: reportFolder, Name: typeDocumentation},
+		// 		// {Kind: report.KindMarkdown, Folder: reportFolder, Name: typeDocumentation},
+		// 		{Kind: report.KindSave, Folder: reportFolder, Name: typeDocumentation},
+		// 	},
+		// },
+		// {
+		// 	Prompt:        review.PromptExplainChanges,
+		// 	RetrieverKind: retriever.KindDiff,
+		// 	CommentOnPr:   false,
+		// 	Reporters: []ReporterDefinition{
+		// 		{Kind: report.KindHTML, Folder: reportFolder, Name: typeUpdateDocumentations},
+		// 		// {Kind: report.KindMarkdown, Folder: reportFolder, Name: typeUpdateDocumentations},
+		// 		{Kind: report.KindSave, Folder: reportFolder, Name: typeUpdateDocumentations},
+		// 	},
+		// },
 	}
 
 	return GetReviewers(envManager, def)
