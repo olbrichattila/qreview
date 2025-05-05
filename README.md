@@ -69,6 +69,31 @@ jobs:
 ```
 > Note: Amazon Q Developer CLI currently requires interactive login, so GitHub Action support is limited to Bedrock or other backends unless expanded.
 
+
+### Possible Future Improvements
+This project is already quite powerful, but there are several areas I plan to enhance further:
+
+- **Improve Code Quality and Refactoring:**
+The tool has grown quickly, and parts of the codebase would benefit from refactoring and better organization. As it continues to evolve, I plan to clean up internal abstractions, enforce stricter typing, and improve test coverage.
+
+- **Additional Reporter Types:**
+Expand the current HTML and Markdown reporters to include:
+
+- Direct uploads to Amazon S3 for documentation hosting
+- Integration with Confluence for team-wide visibility
+- Custom API calls to push documentation or review results to internal systems
+
+- **Dynamic Documentation Portal:**
+Create a dedicated documentation viewer site with search and filtering by file, time, and type (review, code explanation, change summary). This would make it easier for teams to explore the review history over time.
+
+- **Better GitHub Integration:**
+Support for more GitHub workflows (e.g., triggered on push or comment), better diff visualization, and inline responses to review comments.
+
+
+- **Domain-Aware, Agentic AI Reviews:**
+Extend the reviewer with agentic AI capabilities using Retrieval-Augmented Generation (RAG), where reviews can be enhanced by specific domain knowledge or internal documentation. This would allow the tool to not only identify code issues, but also evaluate business logic, validate domain-specific rules, and flag inconsistencies based on proprietary requirements or best practices.
+
+These improvements aim to make the tool even more developer-friendly, team-scalable, and capable of reasoning beyond the code itself.
 ---
 
 ## Demo
