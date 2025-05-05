@@ -1,0 +1,8 @@
+#!/bin/sh
+echo "🔍 Running qreview-go code analysis..."
+qreview-go
+RESULT=$?
+if [ $RESULT -ne 0 ]; then
+  echo "❌ Pre-commit check failed."
+  exit 1
+fi
