@@ -14,14 +14,13 @@ import (
 )
 
 const (
-	PromptReview = `Review this code for bugs, performance, security issues, and suggest improvements.
-	The code is provided with line numbers in the format "LINE_NUMBER: code".
-	When referring to lines in your review, use the exact line number shown at the beginning of each line.
+	PromptReview = `Review this code for bugs, performance, security issues.
+	Please only comment issues and not good practices.
+	Please refer to the exact line number in the file from Code:
 	Use the following format for your comments: Line: <line number>: <review>
 	
 	Code:
 	`
-
 	PromptExplainChanges = "Explain changes of the following diff:\n\n"
 	PromptExplainCode    = "Explain what this code do:\n\n"
 

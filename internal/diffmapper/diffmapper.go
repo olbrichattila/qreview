@@ -28,7 +28,6 @@ func GetMap(diff string) ChangedLines {
 		line := scanner.Text()
 
 		if strings.HasPrefix(line, "@@") {
-			fmt.Println("hunk", line)
 			hunkStarted = true
 			// Parse hunk header: @@ -a,b +c,d @@
 			parts := strings.Split(line, " ")
@@ -53,6 +52,11 @@ func GetMap(diff string) ChangedLines {
 		case strings.HasPrefix(line, "-"):
 			// removed line, don't increment newLineNum
 		case strings.HasPrefix(line, " "):
+			// actually this is unchanged, but the reviewer may want to comment ot this as well
+			changes = append(changes, ChangedLine{
+				LineNum: newLineNum,
+				Content: line[1:], // strip "+"
+			})
 			newLineNum++
 		}
 	}
@@ -66,11 +70,17 @@ func GetClosestPrOffset(prLineNr int) (int, error) {
 		return 0, fmt.Errorf("you must run GetMap before getting the closest pr offset")
 	}
 
-	for i := len(latestChanges) - 1; i >= 0; i-- {
-		if latestChanges[i].LineNum <= prLineNr {
+	// for i := len(latestChanges) - 1; i >= 0; i-- {
+	// 	if latestChanges[i].LineNum <= prLineNr {
+	// 		return latestChanges[i].LineNum, nil
+	// 	}
+	// }
+
+	for i := 0; i < len(latestChanges); i++ {
+		if latestChanges[i].LineNum >= prLineNr {
 			return latestChanges[i].LineNum, nil
 		}
 	}
 
-	return 1, nil
+	return latestChanges[0].LineNum, nil
 }

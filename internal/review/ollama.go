@@ -52,6 +52,7 @@ func (a *ollama) AnalyzeCode(fileName string) error {
 
 	remappedContent, lineMap := helpers.SourceCodeLineRemap(content.FileContent)
 
+	fmt.Println("executing ollama command")
 	cmd := exec.Command("ollama", "run", "llama3", a.prompt+remappedContent)
 
 	var out bytes.Buffer
@@ -60,6 +61,7 @@ func (a *ollama) AnalyzeCode(fileName string) error {
 	if err != nil {
 		return fmt.Errorf("cannot execute ollama command, %w", err)
 	}
+	fmt.Println("executed ollama command")
 
 	aiResponse := out.String()
 

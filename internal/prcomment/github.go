@@ -51,8 +51,6 @@ func (g *github) Comment(prURL, filePath string, comment string, lineNumber int)
 		"side":      "RIGHT",
 	}
 
-	fmt.Println(body)
-
 	jsonBody, err := json.Marshal(body)
 	if err != nil {
 		return err

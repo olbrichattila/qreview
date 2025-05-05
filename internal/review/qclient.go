@@ -44,7 +44,6 @@ func (a *awsq) AnalyzeCode(fileName string) error {
 
 	var stdout, stderr bytes.Buffer
 	fmt.Println("executing q command")
-
 	cmd := exec.Command("/usr/bin/q", "chat", "--no-interactive", a.prompt+remappedContent)
 
 	cmd.Stdout = &stdout

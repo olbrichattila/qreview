@@ -106,6 +106,7 @@ func (a *bedrock) AnalyzeCode(fileName string) error {
 	// modelID := "anthropic.claude-3-sonnet-20240229-v1:0"
 	modelID := "anthropic.claude-v2"
 
+	fmt.Println("executing Badrock command")
 	invokeResp, err := bedrockClient.InvokeModel(ctx, &bedrockruntime.InvokeModelInput{
 		ModelId:     aws.String(modelID),
 		ContentType: aws.String("application/json"),
@@ -115,6 +116,7 @@ func (a *bedrock) AnalyzeCode(fileName string) error {
 	if err != nil {
 		return fmt.Errorf("failed to get response from Amazon Bedrock: %w", err)
 	}
+	fmt.Println("executed Badrock command")
 
 	// Parse the response
 	var claudeResp claudeResponse

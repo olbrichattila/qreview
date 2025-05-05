@@ -72,7 +72,7 @@ func hasLineNumberByRegex(str, regex string) (int, string, bool) {
 		numMatch := numberRegex.FindString(matchText)
 		if numMatch != "" {
 			if firstNumber, err := strconv.Atoi(numMatch); err == nil {
-				lineNr = firstNumber + 1
+				lineNr = firstNumber
 			}
 		}
 
