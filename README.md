@@ -102,14 +102,18 @@ These improvements aim to make the tool even more developer-friendly, team-scala
 ---
 
 ## Demo
-Here’s a quick demo of QReview in action:
-TODO insert link, or video
-You’ll see:
+Here’s a quick demo of QReview in action: Note: This video uses AI voice over.
 
+[![Watch the video](https://img.youtube.com/vi/7C9rcr6esXU/maxresdefault.jpg)](https://www.youtube.com/watch?v=7C9rcr6esXU)
+
+
+You’ll see:
+- At the beginning of the video I explain what the tool can do
 - Terminal reviews and summaries
 - Markdown + HTML output generation
 - PR inline comments via GitHub API
 - Dynamic, timestamped documentation
+- GitGub action set-up
 
 ## Code Repository
 [https://github.com/olbrichattila/qreview](https://github.com/olbrichattila/qreview)
