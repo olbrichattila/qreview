@@ -146,6 +146,12 @@ Once the system was functional, I turned it loose on its own source code. The re
 
 What began as a utility has grown into a versatile, self-improving, and extensible code review companion.
 
+## Local installation guide:
+Please use the command:
+```
+go install github.com/olbrichattila/qreview@latest
+```
+
 ## GitHub automation installation guide:
 
 1. Set Up GitHub Secrets
