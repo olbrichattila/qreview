@@ -55,7 +55,7 @@ func GetMap(diff string) ChangedLines {
 			// actually this is unchanged, but the reviewer may want to comment ot this as well
 			changes = append(changes, ChangedLine{
 				LineNum: newLineNum,
-				Content: line[1:], // strip "+"
+				Content: line[1:], // strip " "
 			})
 			newLineNum++
 		}

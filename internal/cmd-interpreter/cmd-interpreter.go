@@ -12,6 +12,10 @@ const (
 )
 
 func Arg(index int) (string, error) {
+	if index < 0 {
+		return "", fmt.Errorf("index cannot be negative")
+	}
+
 	i2 := 0
 	for i := 1; i < len(os.Args); i++ {
 		if !strings.HasPrefix(os.Args[i], "-") {
