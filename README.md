@@ -145,3 +145,60 @@ Reviewing just the diff often lacked enough context, leading to poor or irreleva
 Once the system was functional, I turned it loose on its own source code. The result? A cascade of inline suggestions and improvement ideas — effectively reviewing and improving itself. This was a rewarding moment that reinforced the value and practical utility of the tool
 
 What began as a utility has grown into a versatile, self-improving, and extensible code review companion.
+
+## GitHub automation installation guide:
+
+1. Set Up GitHub Secrets
+```
+AI_CLIENT=bedrock
+FILE_EXTENSIONS=php,go,js  # Add/extend file types to analyze
+GH_TOKEN=<your_GitHub_token>  
+AWS_ACCESS_KEY_ID=<your_AWS_access_key>  
+AWS_SECRET_ACCESS_KEY=<your_AWS_secret_key>  
+AWS_REGION=<your_AWS_region>  
+```
+
+> Note: Ensure your AWS IAM user has permissions for Amazon Bedrock (anthropic.claude-v2).
+
+2. Create GitHub Workflow
+
+Add this YAML to .github/workflows/code-review.yml:
+```yaml
+name: Automated Code Review on PR  
+
+on:  
+  pull_request:  
+    types: [opened]  
+
+jobs:  
+  review:  
+    runs-on: ubuntu-latest  
+    steps:  
+      - name: Pull QReview Docker Image  
+        run: docker pull aolb/qreview:latest  
+
+      - name: Run Code Review  
+        env:  
+          AI_CLIENT: ${{ secrets.AI_CLIENT }}  
+          FILE_EXTENSIONS: ${{ secrets.FILE_EXTENSIONS }}  
+          PR_URL: ${{ github.event.pull_request.html_url }}  
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}  
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}  
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}  
+          AWS_REGION: ${{ secrets.AWS_REGION }}  
+        run: |  
+          docker run \  
+            -e PR_URL="$PR_URL" \  
+            -e AI_CLIENT="$AI_CLIENT" \  
+            -e FILE_EXTENSIONS="$FILE_EXTENSIONS" \  
+            -e GITHUB_TOKEN="$GITHUB_TOKEN" \  
+            -e AWS_ACCESS_KEY_ID="$AWS_ACCESS_KEY_ID" \  
+            -e AWS_SECRET_ACCESS_KEY="$AWS_SECRET_ACCESS_KEY" \  
+            -e AWS_REGION="$AWS_REGION" \  
+            aolb/qreview  
+```
+
+**Notes:**
+Default model: anthropic.claude-v2 (ensure IAM permissions).
+Extend FILE_EXTENSIONS to include other languages as needed.
+
