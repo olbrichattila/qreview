@@ -47,10 +47,10 @@ type comm struct {
 func (c *comm) Execute() error {
 	files, err := c.source.GetFiles()
 	if err != nil {
-		return fmt.Errorf("failed to get files form git: %w", err)
+		return fmt.Errorf("failed to get files from git: %w", err)
 	}
 
-	if len(files) == 0 {
+	if files == nil || len(files) == 0 {
 		return nil
 	}
 
@@ -61,7 +61,7 @@ func (c *comm) Execute() error {
 
 		err := c.executeReview(file)
 		if err != nil {
-			return fmt.Errorf("execute, could not read file: %w", err)
+			return fmt.Errorf("failed to execute review: %w", err)
 		}
 	}
 
@@ -73,8 +73,8 @@ func (c *comm) hasExt(fileName string) bool {
 }
 
 func (c *comm) executeReview(fileName string) error {
+	fmt.Printf("Reviewing %s...\n", fileName)
 	for _, reviewer := range c.reviewers {
-		fmt.Printf("Reviewing %s...\n", fileName)
 		if err := reviewer.AnalyzeCode(fileName); err != nil {
 			return fmt.Errorf("failed to analyze file: %w", err)
 		}
