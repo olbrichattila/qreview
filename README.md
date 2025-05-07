@@ -181,11 +181,6 @@ Amazon Q Developer CLI is at the heart of this project. I used it to:
 
 ---
 
-Tips:
-- Use the --code and --diff features of Amazon Q CLI for narrow, focused analysis
-- Build reusable prompts with different retrieverKind values (e.g., file, diff)
-- Since Q requires interactive login, local reviews are ideal — but the architecture supports extending it with Bedrock or Ollama for CI/CD compatibility
-
 ## Development Experience and Challenges
 What started as a quick automation experiment quickly evolved into a much larger and more powerful tool as new ideas emerged during development — especially around making the system modular, with support for multiple and extendable reporters (e.g., HTML, Markdown, PR comments).
 
