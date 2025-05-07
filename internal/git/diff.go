@@ -8,7 +8,7 @@ import (
 )
 
 func GetStagedFiles() ([]string, error) {
-	cmd := exec.Command("git", "diff", "--name-only", "--diff-filter=ACM")
+	cmd := exec.Command("git", "diff", "--cached", "--name-only", "--diff-filter=ACM")
 	var out bytes.Buffer
 	cmd.Stdout = &out
 
