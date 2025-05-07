@@ -156,6 +156,23 @@ Please use the command:
 go install github.com/olbrichattila/qreview@latest
 ```
 
+**Usage:**
+
+Review local git changes
+```
+qreview 
+```
+
+Locally review GitHub Pull request
+```
+qreview -gitHubPr=<your PR url>
+```
+
+Locally review GitHub Pull request and comment on the PR in GitHub
+```
+qreview -gitHubPr=<your PR url> -comment
+```
+
 ## GitHub automation installation guide:
 
 1. Set Up GitHub Secrets
@@ -207,6 +224,9 @@ jobs:
             -e AWS_REGION="$AWS_REGION" \  
             aolb/qreview  
 ```
+
+**Usage**
+The Pull Request is automatically reviewed when it is created.
 
 **Notes:**
 Default model: anthropic.claude-v2 (ensure IAM permissions).
