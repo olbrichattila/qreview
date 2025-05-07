@@ -128,20 +128,6 @@ func (a *apiReporter) Summary(fileName string) error {
 	return nil
 }
 
-func (a *apiReporter) getRootReportPath() string {
-	rootPath := a.path
-	if !strings.HasSuffix(rootPath, "/") {
-		rootPath += "/"
-	}
-
-	reportName := a.reportName
-	if !strings.HasSuffix(reportName, "/") {
-		reportName += "/"
-	}
-
-	return rootPath + reportName
-}
-
 func (a *apiReporter) getRelPath(fileName string) string {
 	return fileName + ".html"
 }
