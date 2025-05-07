@@ -23,6 +23,11 @@ type pageData struct {
 }
 
 func Generate(rootPath, reportPath string) error {
+	// Check if reportPath exists, skip if it doesn't
+	if _, err := os.Stat(reportPath); os.IsNotExist(err) {
+		return nil
+	}
+
 	files, err := getHtmlFiles(reportPath)
 	if err != nil {
 		return err
