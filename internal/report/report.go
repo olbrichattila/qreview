@@ -9,6 +9,7 @@ const (
 	KindHTML     Kind = "html"
 	KindMarkdown Kind = "markdown"
 	KindSave     Kind = "save"
+	KindAPI      Kind = "api"
 )
 
 type Reporter interface {
@@ -24,6 +25,8 @@ func New(rType Kind, path, reportName string) (Reporter, error) {
 		return newMarkdown(reportName), nil
 	case KindSave:
 		return newSaveResponse(path, reportName), nil
+	case KindAPI:
+		return newAPI(path, reportName), nil
 	default:
 		return nil, fmt.Errorf("invalid report type %s", rType)
 	}
