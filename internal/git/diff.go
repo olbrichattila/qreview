@@ -3,12 +3,13 @@ package git
 import (
 	"bufio"
 	"bytes"
+	"fmt"
 	"os/exec"
 	"strings"
 )
 
 func GetStagedFiles() ([]string, error) {
-	cmd := exec.Command("git", "diff", "--cached", "--name-only", "--diff-filter=ACM")
+	cmd := exec.Command("git", "diff", "--name-only", "--diff-filter=ACM")
 	var out bytes.Buffer
 	cmd.Stdout = &out
 
@@ -17,6 +18,7 @@ func GetStagedFiles() ([]string, error) {
 	}
 
 	gitResponse := out.String()
+	fmt.Println(gitResponse)
 	files := []string{}
 	scanner := bufio.NewScanner(strings.NewReader(gitResponse))
 	for scanner.Scan() {
