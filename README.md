@@ -123,26 +123,29 @@ You’ll see:
 ## Screenshots
 
 **Command line**
-https://raw.githubusercontent.com/olbrichattila/qreview/refs/heads/main/resources/command-line.png
+![Command line screenshot](https://raw.githubusercontent.com/olbrichattila/qreview/refs/heads/main/resources/command-line.png)
 
 ---
 
 **Running in GitHub action**
-https://raw.githubusercontent.com/olbrichattila/qreview/refs/heads/main/resources/action-running.png
+![Running in GitHub action screenshot](https://raw.githubusercontent.com/olbrichattila/qreview/refs/heads/main/resources/action-running.png)
 
 ---
 
 **Review is done in GitHub action**
-https://raw.githubusercontent.com/olbrichattila/qreview/refs/heads/main/resources/reviewed.png
+![Review is done in GitHub action screenshot](https://raw.githubusercontent.com/olbrichattila/qreview/refs/heads/main/resources/reviewed.png)
+
+---
 
 **8 Comment added to the pull request**
-https://raw.githubusercontent.com/olbrichattila/qreview/refs/heads/main/resources/comments-8.png
+![8 Comment added to the pull request screenshot](https://raw.githubusercontent.com/olbrichattila/qreview/refs/heads/main/resources/comments-8.png)
+
+---
 
 **Example comment**
-https://raw.githubusercontent.com/olbrichattila/qreview/refs/heads/main/resources/ai-review-comment.png
+![Example comment screenshot](https://raw.githubusercontent.com/olbrichattila/qreview/refs/heads/main/resources/ai-review-comment.png)
 
---
-
+---
 
 ## How I Used Amazon Q Developer
 Amazon Q Developer CLI is at the heart of this project. I used it to:
