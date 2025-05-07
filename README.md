@@ -123,26 +123,31 @@ You’ll see:
 ## Screenshots
 
 **Command line**
+
 ![Command line screenshot](https://raw.githubusercontent.com/olbrichattila/qreview/refs/heads/main/resources/command-line.png)
 
 ---
 
 **Running in GitHub action**
+
 ![Running in GitHub action screenshot](https://raw.githubusercontent.com/olbrichattila/qreview/refs/heads/main/resources/action-running.png)
 
 ---
 
 **Review is done in GitHub action**
+
 ![Review is done in GitHub action screenshot](https://raw.githubusercontent.com/olbrichattila/qreview/refs/heads/main/resources/reviewed.png)
 
 ---
 
 **8 Comment added to the pull request**
+
 ![8 Comment added to the pull request screenshot](https://raw.githubusercontent.com/olbrichattila/qreview/refs/heads/main/resources/comments-8.png)
 
 ---
 
 **Example comment**
+
 ![Example comment screenshot](https://raw.githubusercontent.com/olbrichattila/qreview/refs/heads/main/resources/ai-review-comment.png)
 
 ---
@@ -150,16 +155,19 @@ You’ll see:
 ### Reports
 
 **Report - menu**
+
 ![Example comment screenshot](https://raw.githubusercontent.com/olbrichattila/qreview/refs/heads/main/resources/report-menu.png)
 
 ---
 
 **Report - file list**
+
 ![Example comment screenshot](https://raw.githubusercontent.com/olbrichattila/qreview/refs/heads/main/resources/report-list.png)
 
 ---
 
 **Report - example**
+
 ![Example comment screenshot](https://raw.githubusercontent.com/olbrichattila/qreview/refs/heads/main/resources/report.png)
 
 ---
