@@ -147,6 +147,23 @@ You’ll see:
 
 ---
 
+### Reports
+
+**Report - menu**
+![Example comment screenshot](https://raw.githubusercontent.com/olbrichattila/qreview/refs/heads/main/resources/report-menu.png)
+
+---
+
+**Report - file list**
+![Example comment screenshot](https://raw.githubusercontent.com/olbrichattila/qreview/refs/heads/main/resources/report-list.png)
+
+---
+
+**Report - example**
+![Example comment screenshot](https://raw.githubusercontent.com/olbrichattila/qreview/refs/heads/main/resources/report.png)
+
+---
+
 ## How I Used Amazon Q Developer
 Amazon Q Developer CLI is at the heart of this project. I used it to:
 - Analyze code diffs and full files using custom prompts
