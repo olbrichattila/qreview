@@ -13,6 +13,7 @@ FROM alpine:latest
 
 COPY --from=builder /go/bin/qreview /usr/local/bin/qreview
 COPY entrypoint.sh /entrypoint.sh
+COPY definitions.yaml /definitions.yaml
 RUN chmod +x /entrypoint.sh
 
 
