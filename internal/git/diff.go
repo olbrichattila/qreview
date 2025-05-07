@@ -3,7 +3,6 @@ package git
 import (
 	"bufio"
 	"bytes"
-	"fmt"
 	"os/exec"
 	"strings"
 )
@@ -18,7 +17,6 @@ func GetStagedFiles() ([]string, error) {
 	}
 
 	gitResponse := out.String()
-	fmt.Println(gitResponse)
 	files := []string{}
 	scanner := bufio.NewScanner(strings.NewReader(gitResponse))
 	for scanner.Scan() {
