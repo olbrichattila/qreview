@@ -105,7 +105,6 @@ These improvements aim to make the tool even more developer-friendly, team-scala
 Here’s a quick demo of QReview in action: Note: This video uses AI voice over.
 
 [![Watch the video](https://raw.githubusercontent.com/olbrichattila/qreview/refs/heads/main/resources/video.png)](https://youtu.be/Lw0Toupu_q0)
-{% youtube Lw0Toupu_q0 %}
 
 You’ll see:
 - At the beginning of the video I explain what the tool can do
