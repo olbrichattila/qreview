@@ -5,9 +5,10 @@ package retriever
 type Kind string
 
 const (
-	KindFile  Kind = "file"
-	KindDiff  Kind = "diff"
-	KindMixed Kind = "mixed"
+	KindFile       Kind = "file"
+	KindDiff       Kind = "diff"
+	KindMixed      Kind = "mixed"
+	KindSmartMixed Kind = "smart_mixed"
 )
 
 // Result is the retriever result
