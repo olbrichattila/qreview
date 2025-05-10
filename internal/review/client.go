@@ -14,7 +14,7 @@ import (
 )
 
 const (
-	PromptReview         = "Review this code for bugs, performance, security issues. Only comment issues and not good practices. Refer to the exact line number in the file. Use the following format for your comments: Line: <line number>: <review> Code starts here: "
+	PromptReview         = "Review this code only for bugs and bad practices. Only comment issues and not good practices. Refer to the exact line number in the file. Use the following format for your comments: Line: <line number>: <review> Code starts here: "
 	PromptExplainChanges = "Explain changes of the following diff:\n\n"
 	PromptExplainCode    = "Explain what this code do:\n\n"
 
