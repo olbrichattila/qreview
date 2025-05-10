@@ -1,36 +1,60 @@
 package env
 
 import (
+	"bufio"
 	"fmt"
 	"os"
-	"path/filepath"
+	"strconv"
 	"strings"
-
-	"github.com/joho/godotenv"
 )
 
+// NewDotEnv creates a new environment manager that loads from .env file
 func NewDotEnv() (EnvironmentManager, error) {
-	if _, err := os.Stat(".env"); err == nil {
-		err := godotenv.Load()
-		if err != nil {
-			return nil, fmt.Errorf("Could not load .env file %w", err)
-		}
+	err := loadEnv()
+	if err != nil {
+		return nil, fmt.Errorf("failed to load .env file: %w", err)
 	}
 
-	return &dotenv{}, nil
+	return &env{}, nil
 }
 
-type dotenv struct {
+func loadEnv() error {
+	file, err := os.Open(".env")
+	if err != nil {
+		return err
+	}
+	defer file.Close()
+
+	scanner := bufio.NewScanner(file)
+	for scanner.Scan() {
+		line := scanner.Text()
+		if strings.HasPrefix(line, "#") || strings.TrimSpace(line) == "" {
+			continue
+		}
+
+		parts := strings.SplitN(line, "=", 2)
+		if len(parts) != 2 {
+			continue
+		}
+
+		key := strings.TrimSpace(parts[0])
+		value := strings.TrimSpace(parts[1])
+
+		os.Setenv(key, value)
+	}
+
+	return scanner.Err()
 }
 
-// ShouldProcessFile implements EnvironmentManager.
-func (d *dotenv) ShouldProcessFile(fileName string) bool {
-	extensions := os.Getenv(fileExtensions)
-	extensionParts := strings.Split(extensions, ",")
-	for _, extensionPart := range extensionParts {
-		ext := "." + strings.TrimSpace(strings.ToLower(extensionPart))
-		fileExt := filepath.Ext(fileName)
-		if strings.ToLower(fileExt) == strings.ToLower(ext) {
+// ShouldProcessFile checks if the file should be processed based on its extension
+func (e *env) ShouldProcessFile(fileName string) bool {
+	extensions := e.FileExtensions()
+	if len(extensions) == 0 {
+		return true
+	}
+
+	for _, ext := range extensions {
+		if strings.HasSuffix(fileName, "."+ext) {
 			return true
 		}
 	}
@@ -38,12 +62,17 @@ func (d *dotenv) ShouldProcessFile(fileName string) bool {
 	return false
 }
 
-// GithubToken implements EnvironmentManager.
-func (d *dotenv) GithubToken() string {
-	return os.Getenv(githubToken)
-}
-
-// Client implements EnvironmentManager.
-func (d *dotenv) Client() string {
-	return strings.ToLower(os.Getenv(clientEnvName))
+// ContextLines returns the number of context lines to include around changed code
+func (e *env) ContextLines() int {
+	contextLines := os.Getenv("CONTEXT_LINES")
+	if contextLines == "" {
+		return 5 // Default to 5 lines of context
+	}
+	
+	lines, err := strconv.Atoi(contextLines)
+	if err != nil {
+		return 5 // Default to 5 lines if parsing fails
+	}
+	
+	return lines
 }

@@ -67,7 +67,7 @@ func GetDefaultReviewers(envManager env.EnvironmentManager, reportFolder string)
 	def := ReviewerDefinitions{
 		{
 			Prompt:        review.PromptReview,
-			RetrieverKind: retriever.KindMixed,
+			RetrieverKind: retriever.KindSmartMixed, // Use smart mixed retriever for code review
 			CommentOnPr:   true,
 			Reporters: []ReporterDefinition{
 				{Kind: report.KindHTML, Folder: reportFolder, Name: typeReview},
@@ -128,6 +128,9 @@ func GetReviewers(envManager env.EnvironmentManager, reviewerDefinitions Reviewe
 	return reviewers, nil
 }
 
+// New retriever type for smart mixed
+var smartMixedRetriever retriever.Retriever
+
 func initRetrievers(envManager env.EnvironmentManager) error {
 	var err error
 	fileRetriever, err = retriever.NewFile(envManager)
@@ -144,6 +147,12 @@ func initRetrievers(envManager env.EnvironmentManager) error {
 	if err != nil {
 		return err
 	}
+	
+	// Initialize the smart mixed retriever
+	smartMixedRetriever, err = retriever.NewSmartMixed(fileRetriever, diffRetriever, envManager.ContextLines())
+	if err != nil {
+		return err
+	}
 
 	return nil
 }
@@ -156,6 +165,8 @@ func getRetrievers(envManager env.EnvironmentManager, retrieverKind retriever.Ki
 		return diffRetriever, nil
 	case retriever.KindMixed:
 		return mixedRetriever, nil
+	case retriever.KindSmartMixed:
+		return smartMixedRetriever, nil
 	default:
 		return nil, fmt.Errorf("cannot determine retriever, %s", retrieverKind)
 	}
