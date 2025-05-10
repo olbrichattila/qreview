@@ -149,7 +149,7 @@ func initRetrievers(envManager env.EnvironmentManager) error {
 	}
 	
 	// Initialize the smart mixed retriever
-	smartMixedRetriever, err = retriever.NewSmartMixed(fileRetriever, diffRetriever, envManager.ContextLines())
+	smartMixedRetriever, err = retriever.NewSmartMixed(envManager, fileRetriever, diffRetriever)
 	if err != nil {
 		return err
 	}

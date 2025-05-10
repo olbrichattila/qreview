@@ -2,11 +2,13 @@ package retriever
 
 import (
 	"fmt"
+
+	"github.com/olbrichattila/qreview/internal/env"
 )
 
 // NewSmartMixed creates a retriever that intelligently combines file and diff information
 // to provide only the relevant parts of a file for review
-func NewSmartMixed(fileRetriever, diffRetriever Retriever, contextLines int) (Retriever, error) {
+func NewSmartMixed(envManager env.EnvironmentManager, fileRetriever, diffRetriever Retriever) (Retriever, error) {
 	if fileRetriever == nil || diffRetriever == nil {
 		return nil, fmt.Errorf("one or both of the retrievers in NewSmartMixed is nil")
 	}
@@ -14,7 +16,7 @@ func NewSmartMixed(fileRetriever, diffRetriever Retriever, contextLines int) (Re
 	return &smartMixed{
 		fileRetriever:    fileRetriever,
 		diffRetriever:    diffRetriever,
-		contextExtractor: NewContextExtractor(contextLines),
+		contextExtractor: NewContextExtractor(envManager.ContextLines()),
 	}, nil
 }
 
@@ -43,14 +45,14 @@ func (m *smartMixed) Get(fileName string) (Result, error) {
 	if err != nil {
 		// Fall back to full file content if extraction fails
 		return Result{
-			Kind:        KindMixed,
+			Kind:        KindSmartMixed,
 			FileContent: fileResult.FileContent,
 			DiffContent: diffResult.FileContent,
 		}, nil
 	}
 
 	return Result{
-		Kind:        KindMixed,
+		Kind:        KindSmartMixed,
 		FileContent: contextContent, // Only the relevant parts with context
 		DiffContent: diffResult.FileContent,
 	}, nil
